@@ -1,9 +1,9 @@
 package com.app.serviceImpl;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +16,9 @@ import com.app.service.UserService;
 @Service
 public class UserServiceImpl implements UserService{
 
-	@Autowired
-	UserRepo userRepo;
+	@Autowired UserRepo userRepo;
 	
+	@Autowired ModelMapper mapper;
 	
 	@Override
 	public UserDto createUser(UserDto userDto) {
@@ -68,24 +68,28 @@ public class UserServiceImpl implements UserService{
 	
 	
 	private User dtoToUserEntity(UserDto dto) {
+		User user = mapper.map(dto, User.class);
 		
-		User user = new User();
-		user.setId(dto.getId());
-		user.setEmail(dto.getEmail());
-		user.setName(dto.getName());
-		user.setPassword(dto.getPassword());
-		user.setAbout(dto.getAbout());
+//		User user = new User();
+//		user.setId(dto.getId());
+//		user.setEmail(dto.getEmail());
+//		user.setName(dto.getName());
+//		user.setPassword(dto.getPassword());
+//		user.setAbout(dto.getAbout());
 		return user;
 	}
 	
 private UserDto userEntityToDto(User user) {
-		UserDto dto = new UserDto();
-		dto.setId(user.getId());
-		dto.setEmail(user.getEmail());
-		dto.setName(user.getName());
-		dto.setPassword(user.getPassword());
-		dto.setAbout(user.getAbout());
-		return dto;
+	
+ UserDto userDto = mapper.map(user, UserDto.class);
+	
+//		UserDto dto = new UserDto();
+//		dto.setId(user.getId());
+//		dto.setEmail(user.getEmail());
+//		dto.setName(user.getName());
+//		dto.setPassword(user.getPassword());
+//		dto.setAbout(user.getAbout());
+		return userDto;
 	}
 
 }

@@ -17,24 +17,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.payload.ApiResponse;
-import com.app.payload.UserDto;
-import com.app.service.UserService;
+import com.app.payload.CategoryDto;
+import com.app.service.CategoryService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api/category")
+public class CategoryController {
+	
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	private UserService userService;
+	private CategoryService categoryService;
 
-	@PostMapping("/createUser")
-	public ResponseEntity<?> createUser(@Valid @RequestBody UserDto dto) {
+	@PostMapping("/create")
+	public ResponseEntity<?> createUser(@Valid @RequestBody CategoryDto dto) {
 		try {
-			UserDto created = userService.createUser(dto);
+			CategoryDto created = categoryService.createCategory(dto);
 			logger.info("Created:{} " + created);
 			return ResponseEntity.status(HttpStatus.CREATED).body(created);
 
@@ -45,22 +46,22 @@ public class UserController {
 
 	}
 
-	@PutMapping("/updateUser/{id}")
-	public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto dto, @PathVariable("id") int id) {
-			UserDto updateUser = userService.updateUser(dto, id);
-			logger.info("Updated:{} " + updateUser);
-			return ResponseEntity.status(HttpStatus.OK).body(updateUser);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateUser(@Valid @RequestBody CategoryDto dto, @PathVariable("id") int id) {
+			CategoryDto update = categoryService.updateCategory(dto, id);
+			logger.info("Updated:{} " + update);
+			return ResponseEntity.status(HttpStatus.OK).body(update);
 	}
 
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
-		return ResponseEntity.ok( userService.getUserById(id));
+		return ResponseEntity.ok( categoryService.getCategoryById(id));
 	}
 	
 	@GetMapping("/findAll")
 	public ResponseEntity<?> getAllUsers() {
 		try {
-			List<UserDto> getAllUser = userService.getAllUsers();
+			List<CategoryDto> getAllUser = categoryService.getAllCategories();
 			logger.info("Users:{} " + getAllUser);
 			return ResponseEntity.status(HttpStatus.OK).body(getAllUser);
 		} catch (Exception e) {
@@ -72,12 +73,15 @@ public class UserController {
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
 		try {
-			userService.deleteUser(id);
+			categoryService.deleteCategory(id);
 			logger.info("Deleted");
-			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted With Id:"+id,true));
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("Category Deleted With Id:"+id,true));
 		} catch (Exception e) {
 			logger.info("Error:{} " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cause: " + e.getCause());
 		}
 	}
+	
+	
+
 }
