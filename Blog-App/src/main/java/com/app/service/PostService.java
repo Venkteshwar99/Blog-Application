@@ -2,25 +2,25 @@ package com.app.service;
 
 import java.util.List;
 
-import com.app.entity.Post;
 import com.app.payload.PostDto;
+import com.app.payload.PostResponse;
 
 public interface PostService {
 
-	Post createPost(PostDto postDto,int userId, int categoryId);
+	PostDto createPost(PostDto postDto, int userId, int categoryId);
 
-	Post updatePost(PostDto postDto);
+	PostDto updatePost(PostDto postDto, int id);
 
-	Post getPostById(int id);
+	PostDto getPostById(int id);
 
-	Post getAllPosts();
+	PostResponse getAllPosts(int pageNumber, int pageSize, String sortBy, String sortDir);
 
 	void deletePost(int id);
 
-	List<Post> getPostsByCategory(int categoryId);
+	List<PostDto> getPostsByCategory(int categoryId);
 
-	List<Post> getPostsByUser(int userId);
+	List<PostDto> getPostsByUser(int userId);
 
-	List<Post> searchPosts(String keyword);
+	List<PostDto> searchPosts(String keyword);
 
 }

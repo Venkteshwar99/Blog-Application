@@ -2,8 +2,6 @@ package com.app.payload;
 
 import java.util.Date;
 
-import com.app.entity.User;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,16 +14,19 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class PostDto {
-	
+
+	private int postId;
+
 	private String title;
-	
+
 	private String content;
 
 	private String imageName;
-	
+
 	private Date date;
-  
-	private User user;
+
+	private CategoryDto category;
+
+	private UserDto user;
+
 }
-
-
