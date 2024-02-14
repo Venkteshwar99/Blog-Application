@@ -131,11 +131,23 @@ public class PostController {
 
 	}
 	
+	/**
+	 * Downloads an image with the specified image name.
+	 *
+	 * @param imageName The name of the image to be downloaded.
+	 * @param response  The HttpServletResponse object to write the image content to.
+	 * @throws IOException If there is an I/O error during the download process.
+	 */
 	@GetMapping(value = "/post/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
 	public void downloadImage(@PathVariable("imageName") String imageName,HttpServletResponse response) throws IOException{
 		
+		 // Get the input stream for the specified resource (image)
 		InputStream resource = fileService.getResource(path, imageName);
+
+		// Set the response content type to JPEG (you can adjust this based on your image type)
 		response.setContentType(org.springframework.http.MediaType.IMAGE_JPEG_VALUE);
+		
+		// Copy the image content from the input stream to the response output stream
 		StreamUtils.copy(resource, response.getOutputStream());
 	}
 }

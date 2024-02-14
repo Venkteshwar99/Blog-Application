@@ -3,10 +3,9 @@ package com.app.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.app.entity.Category;
+import com.app.entity.Comments;
 
 @Repository
-public interface CategoryRepo extends JpaRepository<Category, Integer>{
+public interface CommentRepo extends JpaRepository<Comments, Integer>{
 
-	
 }
