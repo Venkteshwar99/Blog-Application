@@ -5,6 +5,8 @@ import java.util.List;
 import com.app.payload.UserDto;
 
 public interface UserService {
+	
+	public UserDto registereUser(UserDto userDto);
 
 	public UserDto createUser(UserDto userDto);
 
@@ -15,4 +17,5 @@ public interface UserService {
 	public UserDto getUserById(int id);
 
 	public void deleteUser(int id);
+
 }

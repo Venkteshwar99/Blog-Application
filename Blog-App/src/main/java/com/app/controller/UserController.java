@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,15 +70,11 @@ public class UserController {
 		}
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
-		try {
 			userService.deleteUser(id);
 			logger.info("Deleted");
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted With Id:"+id,true));
-		} catch (Exception e) {
-			logger.info("Error:{} " + e.getMessage());
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cause: " + e.getCause());
-		}
 	}
 }
