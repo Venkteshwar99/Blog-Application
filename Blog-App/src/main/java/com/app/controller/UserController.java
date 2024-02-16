@@ -21,8 +21,12 @@ import com.app.payload.ApiResponse;
 import com.app.payload.UserDto;
 import com.app.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "User Controller", description = "User Management API's")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -32,6 +36,7 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	@Operation(summary = "Create a User", description = "Creates a new User")
 	@PostMapping("/createUser")
 	public ResponseEntity<?> createUser(@Valid @RequestBody UserDto dto) {
 		try {
@@ -46,18 +51,21 @@ public class UserController {
 
 	}
 
+	@Operation(summary = "Update a User by ID", description = "Update a User object by specifying its ID.")
 	@PutMapping("/updateUser/{id}")
 	public ResponseEntity<?> updateUser(@Valid @RequestBody UserDto dto, @PathVariable("id") int id) {
-			UserDto updateUser = userService.updateUser(dto, id);
-			logger.info("Updated:{} " + updateUser);
-			return ResponseEntity.status(HttpStatus.OK).body(updateUser);
+		UserDto updateUser = userService.updateUser(dto, id);
+		logger.info("Updated:{} " + updateUser);
+		return ResponseEntity.status(HttpStatus.OK).body(updateUser);
 	}
 
+	@Operation(summary = "Retrieve a User by ID", description = "Get a User object by specifying its ID.")
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
-		return ResponseEntity.ok( userService.getUserById(id));
+		return ResponseEntity.ok(userService.getUserById(id));
 	}
-	
+
+	@Operation(summary = "Fetch all Users", description = "Fetches all User entities and their data from data source")
 	@GetMapping("/findAll")
 	public ResponseEntity<?> getAllUsers() {
 		try {
@@ -70,11 +78,13 @@ public class UserController {
 		}
 	}
 
+	@Operation(summary = "Delete a User by ID", description = "Delete a User object by specifying its ID.")
+	@SecurityRequirement(name = "Bearer Authentication")
 	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
-			userService.deleteUser(id);
-			logger.info("Deleted");
-			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted With Id:"+id,true));
+		userService.deleteUser(id);
+		logger.info("Deleted");
+		return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse("User Deleted With Id:" + id, true));
 	}
 }

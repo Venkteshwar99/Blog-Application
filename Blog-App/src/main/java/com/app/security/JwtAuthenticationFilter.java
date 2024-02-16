@@ -81,8 +81,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				logger.info("Validation fails !!");
 			}
 		}
-
 		filterChain.doFilter(request, response);
-
 	}
 }

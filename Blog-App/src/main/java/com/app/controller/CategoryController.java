@@ -20,20 +20,24 @@ import com.app.payload.ApiResponse;
 import com.app.payload.CategoryDto;
 import com.app.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Category Controller", description = "Category Management API's")
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
 	
 
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
 	@Autowired
 	private CategoryService categoryService;
 
+	@Operation(summary = "Create a Category", description = "Creates a new Category")
 	@PostMapping("/create")
-	public ResponseEntity<?> createUser(@Valid @RequestBody CategoryDto dto) {
+	public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryDto dto) {
 		try {
 			CategoryDto created = categoryService.createCategory(dto);
 			logger.info("Created:{} " + created);
@@ -46,32 +50,36 @@ public class CategoryController {
 
 	}
 
+	@Operation(summary = "Update a Category by ID", description = "Update a Category object by specifying its ID.")
 	@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateUser(@Valid @RequestBody CategoryDto dto, @PathVariable("id") int id) {
+	public ResponseEntity<?> updateCategory(@Valid @RequestBody CategoryDto dto, @PathVariable("id") int id) {
 			CategoryDto update = categoryService.updateCategory(dto, id);
 			logger.info("Updated:{} " + update);
 			return ResponseEntity.status(HttpStatus.OK).body(update);
 	}
 
+	@Operation(summary = "Retrieve a Post by Category ID", description = "Get a Category object by specifying User ID.")
 	@GetMapping("/getById/{id}")
-	public ResponseEntity<?> getUserById(@PathVariable("id") int id) {
+	public ResponseEntity<?> getCategoryById(@PathVariable("id") int id) {
 		return ResponseEntity.ok( categoryService.getCategoryById(id));
 	}
 	
+	@Operation(summary = "Fetch all Categories", description = "Fetches all Categories entities and their data from data source")
 	@GetMapping("/findAll")
-	public ResponseEntity<?> getAllUsers() {
+	public ResponseEntity<?> getAllCategorys() {
 		try {
-			List<CategoryDto> getAllUser = categoryService.getAllCategories();
-			logger.info("Users:{} " + getAllUser);
-			return ResponseEntity.status(HttpStatus.OK).body(getAllUser);
+			List<CategoryDto> getAllCategory = categoryService.getAllCategories();
+			logger.info("Categorys:{} " + getAllCategory);
+			return ResponseEntity.status(HttpStatus.OK).body(getAllCategory);
 		} catch (Exception e) {
 			logger.info("Error:{} " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cause: " + e.getCause());
 		}
 	}
 
+	@Operation(summary = "Delete a Category by ID", description = "Delete a Category object by specifying its ID.")
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable("id") int id) {
+	public ResponseEntity<?> deleteCategory(@PathVariable("id") int id) {
 		try {
 			categoryService.deleteCategory(id);
 			logger.info("Deleted");

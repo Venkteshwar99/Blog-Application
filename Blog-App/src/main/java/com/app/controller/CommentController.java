@@ -14,12 +14,17 @@ import com.app.payload.ApiResponse;
 import com.app.payload.CommentDto;
 import com.app.service.CommentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Comment Controller", description = "Comment Management API's")
 @RestController 
 @RequestMapping("/api")
 public class CommentController {
 	
 	@Autowired private CommentService commentService;
 	
+	@Operation(summary = "Create A Comment To Post By Post Id", description = "Creates A new Comment To A Post By Post Id")
 	@PostMapping("/post/{postId}/comments")
 	public ResponseEntity<CommentDto> addComment(@RequestBody CommentDto commentDto, @PathVariable("postId") int postId){
 		
@@ -28,8 +33,8 @@ public class CommentController {
 		return new ResponseEntity<CommentDto>(comment,HttpStatus.CREATED);
 	}
 	
-
-	@DeleteMapping("/comments")
+	@Operation(summary = "Delete a Comment by ID", description = "Delete a Comment object by specifying its ID.")
+	@DeleteMapping("/comments/{id}")
 	public ResponseEntity<ApiResponse> deleteComment(@PathVariable("id") int id){
 		
 		commentService.deleteComment(id);

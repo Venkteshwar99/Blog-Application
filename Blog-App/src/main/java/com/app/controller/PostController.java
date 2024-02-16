@@ -27,8 +27,11 @@ import com.app.payload.PostResponse;
 import com.app.service.FileService;
 import com.app.service.PostService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Tag(name = "Post Controller", description = "Post Management API's")
 @RestController
 @RequestMapping("/api")
 public class PostController {
@@ -36,11 +39,13 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
-	@Autowired private FileService fileService;
+	@Autowired
+	private FileService fileService;
 
 	@Value("${project.image}")
 	private String path;
 
+	@Operation(summary = "Create a Post", description = "Creates a new Post")
 	@PostMapping("/user/{userId}/category/{categoryId}/posts")
 	public ResponseEntity<PostDto> createPost(@RequestBody PostDto dto, @PathVariable int userId,
 			@PathVariable int categoryId) {
@@ -50,6 +55,7 @@ public class PostController {
 		return new ResponseEntity<PostDto>(post, HttpStatus.CREATED);
 	}
 
+	@Operation(summary = "Update a Post by ID", description = "Update a Post object by specifying its ID.")
 	@PutMapping("/update/post/{postId}")
 	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto dto, @PathVariable int postId) {
 
@@ -59,6 +65,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Delete a User by ID", description = "Delete a Post object by specifying its ID.")
 	@DeleteMapping("/delete/post/{postId}")
 	public ResponseEntity<?> deletePost(@PathVariable int postId) {
 
@@ -68,6 +75,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Retrieve a Post by User ID", description = "Get a Post object by specifying User ID.")
 	@GetMapping("/user/{userId}/posts")
 	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable("userId") int userId) {
 
@@ -77,6 +85,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Retrieve a Post by Category ID", description = "Get a Post object by specifying Category ID.")
 	@GetMapping("/category/{categoryId}/posts")
 	public ResponseEntity<List<PostDto>> getPostsByCategory(@PathVariable("categoryId") int categoryId) {
 
@@ -86,6 +95,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Retrieve a Post by ID", description = "Get a Post object by specifying its ID.")
 	@GetMapping("/post/{postId}")
 	public ResponseEntity<PostDto> getPostsById(@PathVariable("postId") int postId) {
 
@@ -95,6 +105,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Fetch all Posts", description = "Fetches all Post entities and their data from data source")
 	@GetMapping("/posts/findAll")
 	public ResponseEntity<PostResponse> getAllPosts(
 			@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
@@ -108,6 +119,7 @@ public class PostController {
 
 	}
 
+	@Operation(summary = "Fetch all Posts by speciyfing keyword", description = "Fetches all Post entities and their data from data source by specifying keyword")
 	@GetMapping("/posts/search/{keyword}")
 	public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("keyword") String keyword) {
 
@@ -116,37 +128,41 @@ public class PostController {
 		return new ResponseEntity<List<PostDto>>(list, HttpStatus.OK);
 	}
 
+	@Operation(summary = "Add Post Photo", description = "Adds a new Post Image")
 	@PostMapping("/post/image/upload/{postId}")
-	public ResponseEntity<PostDto> uploadImage(@RequestParam("image") MultipartFile file,
-			@PathVariable int postId) throws IOException{
+	public ResponseEntity<PostDto> uploadImage(@RequestParam("image") MultipartFile file, @PathVariable int postId)
+			throws IOException {
 
 		PostDto postDto = postService.getPostById(postId);
-		String fileName =fileService.uploadImage(path, file);
+		String fileName = fileService.uploadImage(path, file);
 
 		postDto.setImageName(fileName);
 
-		PostDto updatedPost =  postService.updatePost(postDto, postId);
+		PostDto updatedPost = postService.updatePost(postDto, postId);
 
 		return new ResponseEntity<PostDto>(updatedPost, HttpStatus.OK);
 
 	}
-	
+
 	/**
 	 * Downloads an image with the specified image name.
 	 *
 	 * @param imageName The name of the image to be downloaded.
-	 * @param response  The HttpServletResponse object to write the image content to.
+	 * @param response  The HttpServletResponse object to write the image content
+	 *                  to.
 	 * @throws IOException If there is an I/O error during the download process.
 	 */
-	@GetMapping(value = "/post/image/{imageName}",produces = MediaType.IMAGE_JPEG_VALUE)
-	public void downloadImage(@PathVariable("imageName") String imageName,HttpServletResponse response) throws IOException{
-		
-		 // Get the input stream for the specified resource (image)
+	@GetMapping(value = "/post/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+	public void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)
+			throws IOException {
+
+		// Get the input stream for the specified resource (image)
 		InputStream resource = fileService.getResource(path, imageName);
 
-		// Set the response content type to JPEG (you can adjust this based on your image type)
+		// Set the response content type to JPEG (you can adjust this based on your
+		// image type)
 		response.setContentType(org.springframework.http.MediaType.IMAGE_JPEG_VALUE);
-		
+
 		// Copy the image content from the input stream to the response output stream
 		StreamUtils.copy(resource, response.getOutputStream());
 	}

@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ import com.app.exceptions.ApiException;
 import com.app.payload.UserDto;
 import com.app.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Auth Controller", description = "Authentication Management API's")
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -37,7 +41,7 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(AuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
 
     @PostMapping("/login")
@@ -48,10 +52,11 @@ public class AuthController {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
-
+      
         JwtResponse response = JwtResponse.builder()
                 .jwtToken(token)
                 .userName(userDetails.getUsername()).build();
+        logger.info(response.toString());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
