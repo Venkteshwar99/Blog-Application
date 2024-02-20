@@ -2,6 +2,7 @@
 package com.app.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.filter.CorsFilter;
 
 import com.app.security.CustomUserDetailService;
 import com.app.security.JwtAuthenticationEntryPoint;
@@ -77,4 +80,25 @@ public class SecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+	@Bean
+	public FilterRegistrationBean<CorsFilter> corsFilter() {
+		org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+	
+		 CorsConfiguration config = new CorsConfiguration();
+		  config.setAllowCredentials(true);
+		  config.addAllowedOriginPattern("*");
+		  config.addAllowedHeader("Authorization");
+		  config.addAllowedHeader("Content-Type");
+		  config.addAllowedHeader("Accept");
+		  config.addAllowedMethod("POST");
+		  config.addAllowedMethod("GET");
+		  config.addAllowedMethod("DELETE");
+		  config.addAllowedMethod("PUT");
+		  config.addAllowedMethod("OPTIONS");
+		  config.setMaxAge(3600L);
+		  source.registerCorsConfiguration("/**", config);
+		
+		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+		return bean;
+	}
 }

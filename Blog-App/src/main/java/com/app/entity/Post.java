@@ -49,7 +49,7 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "post")
 	private Set<Comments> comments = new HashSet<>();
 	
 }

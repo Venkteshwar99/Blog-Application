@@ -3,13 +3,12 @@ package com.app.payload;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.app.entity.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +33,7 @@ public class UserDto {
 	private String name;
 	
 	@Schema(description = "Email", example = "rohit@gmail.com")
+	@NotEmpty
 	@Email(message = "Email address is not valid!!")
 	private String email;
 	
@@ -42,10 +42,19 @@ public class UserDto {
 	@Size(min = 8,max = 10,message = "Password must be minimum of 8 characters and maximum of 10 characters!")
 	private String password;
 	
-	@Schema(description = "About", example = "I am a developer")
 	@NotEmpty
+	@Schema(description = "About", example = "I am a developer")
 	private String about;
 	
 	private Set<RoleDto> roles = new HashSet<>();
+	
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}
 
+	@JsonProperty
+	public void setPassword(String password) {
+		 this.password=password;
+	}
 }
