@@ -2,12 +2,12 @@ import { myAxios } from "./Api.js";
 
 export const signup = (user) => {
   return myAxios
-    .post("/api/v1/auth/register", user)
+    .post("/auth/register", user)
     .then((response) => response.data);
 };
 
 export const loginUser = (loginDetails) => {
   return myAxios
-    .post("/api/v1/auth/login", loginDetails)
+    .post("/auth/login", loginDetails)
     .then((response) => response.data);
 };

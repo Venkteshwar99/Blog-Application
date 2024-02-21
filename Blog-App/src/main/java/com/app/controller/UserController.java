@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 
 @Tag(name = "User Controller", description = "User Management API's")
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);

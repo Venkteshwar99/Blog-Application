@@ -33,7 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Tag(name = "Post Controller", description = "Post Management API's")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class PostController {
 
 	@Autowired

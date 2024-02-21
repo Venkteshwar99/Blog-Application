@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Tag(name = "Comment Controller", description = "Comment Management API's")
 @RestController 
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class CommentController {
 	
 	@Autowired private CommentService commentService;

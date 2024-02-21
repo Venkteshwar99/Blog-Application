@@ -13,13 +13,28 @@ import {
   NavbarToggler,
   UncontrolledDropdown,
 } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { doLogout, getCurrentUser, isLoggedIn } from "../Auth/index1";
 
 // Main Code
 const CustomNavBar = () => {
   const [collapsed, setCollapsed] = useState(true);
   const toggleNavbar = () => setCollapsed(!collapsed);
-  
+  const [login, setLogin] = useState(false);
+  const [user, setUser] = useState(undefined);
+  const navigate = useNavigate();
+  useEffect(() => {
+    setLogin(isLoggedIn());
+    setUser(getCurrentUser());
+  }, [login]);
+
+  const logout =()=>{
+    doLogout(()=>{
+     setLogin(false);
+     navigate("/")
+    })
+  }
+
   return (
     <Navbar color="dark" dark expand="md" fixed="" className="px-4">
       <NavbarBrand tag={Link} to="/">
@@ -56,6 +71,25 @@ const CustomNavBar = () => {
         </Nav>
 
         <Nav navbar>
+          {/* Checking Below If user if LoggedIn then show Logout Option & User Email*/}
+          {login && (
+            <>
+             <NavItem>
+                <NavLink  tag={Link} to="/user/profileInfo">Profile Info</NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink tag={Link} to="/user/dashboard">{user.email}</NavLink>
+              </NavItem>
+
+              <NavItem>
+                <NavLink onClick={logout}>Logout</NavLink>
+              </NavItem>
+            </>
+          )}
+          {/* Its Else part Below If user if not LoggedIn then show Login & SignUp Option*/}
+          {!login && (
+            <>
               <NavItem>
                 <NavLink tag={Link} to="/login">
                   Login
@@ -67,6 +101,8 @@ const CustomNavBar = () => {
                   Signup
                 </NavLink>
               </NavItem>
+            </>
+          )}
         </Nav>
       </Collapse>
     </Navbar>
