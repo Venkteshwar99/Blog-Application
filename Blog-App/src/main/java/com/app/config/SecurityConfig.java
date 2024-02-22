@@ -99,6 +99,7 @@ public class SecurityConfig {
 		  source.registerCorsConfiguration("/**", config);
 		
 		FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<CorsFilter>(new CorsFilter(source));
+		bean.setOrder(-110);
 		return bean;
 	}
 }
