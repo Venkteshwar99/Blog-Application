@@ -33,8 +33,15 @@ export const getCurrentUser = () => {
 
 export const getToken = () => {
   if (isLoggedIn()) {
-    return JSON.parse(localStorage.getItem("data")).jwtToken;
-  } else {
+     
+    const token =  JSON.parse(localStorage.getItem("data")).jwtToken;
+     console.log(token);
+     
+ 
+
+    return token;
+  }
+   else {
     return null;
   }
 };

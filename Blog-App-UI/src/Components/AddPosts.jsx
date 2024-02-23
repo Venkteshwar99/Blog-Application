@@ -118,7 +118,7 @@ const AddPosts = () => {
             </div>
 
             <div className="my-3">
-              <Label for="category">Post Category</Label>
+              <Label for="category" key={post.categoryId}>Post Category</Label>
               <Input
                 type="select"
                 id="category"

@@ -26,7 +26,7 @@ const NewFeed = () => {
     changePage(0);
   }, []);
 
-  const changePage = (pageNumber = 0, pageSize = 2) => {
+  const changePage = (pageNumber = 0, pageSize = 4) => {
     if (pageNumber > postContent.pageNumber && postContent.lastPage) {
       return;
     }
@@ -46,7 +46,7 @@ const NewFeed = () => {
   return (
     <div className="container-fluid">
       <Row>
-        <Col md={{ size: 10, offset: 1 }}>
+        <Col md={{ size: 8, offset: 1 }}>
           Total Elements:({postContent?.totalElements})
           {postContent?.content.map((post) => (
             <Post post={post} key={post.postId} />

@@ -1,26 +1,29 @@
 import React from "react";
-import { Button, Card, CardBody, CardText } from "reactstrap";
+import { Link } from "react-router-dom";
+import {Card, CardBody, CardText, Container } from "reactstrap";
 
 const Post = ({
   post = {
-    title: "This is default post title",
-    content: "This is default post content",
+    title: "",
+    content: "",
   },
 }) => {
   return (
-    <Card className="border-0 shadow-sm mt-4">
-      <CardBody>
+  
+    <Card className="border-0 shadow-sm mt-4" >
+      <CardBody style={{ height:"200px"}}>
         <h1>{post.title}</h1>
         <CardText
           dangerouslySetInnerHTML={{
-            __html: post.content.substring(0, 60) + "....",
+            __html: post.content.substring(0, 40) + "....",
           }}
         ></CardText>
         <div>
-          <Button>Read More</Button>
+          <Link className="btn btn-secondary" to={'/post/'+post.postId}>Read More</Link>
         </div>
       </CardBody>
     </Card>
+
   );
 };
 
