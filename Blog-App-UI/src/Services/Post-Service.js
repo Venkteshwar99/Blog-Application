@@ -21,3 +21,10 @@ export const loadPost=(postId)=>{
     .get("/post/"+postId)
     .then((response) => response.data);
 }
+
+
+export const createComments=(comment,postId)=>{
+  return privateAxios
+  .post(`/post/${postId}/comments`,comment)
+  .then((response) => response.data);
+}
